@@ -1,0 +1,50 @@
+*{
+    box-sizing: border-box;
+}
+.calculator .form-control:focus {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0;
+}
+.scale .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+    color: var(--bs-btn-active-color);
+    background-color:white; 
+    border-color:white;
+}
+.grid {
+    display: grid;
+    grid-template-rows: repeat(var(--bs-rows, 1), 1fr);
+    grid-template-columns: repeat(var(--bs-columns, 5), 1fr);
+    gap: var(--bs-gap, 1.5rem);
+}
+.btn-light{
+    --bs-btn-bg: #ffffff;
+    width: 70px;
+}
+.dropdown .btn-light{
+    --bs-btn-bg: #ffffff;
+    width: auto;
+}
+.calculator .form-control::placeholder {
+    color: #000000;  /* Replace with your desired color */
+  }
+  .calculator .form-control {
+    caret-color: transparent;
+  }
+ .scale .active label{
+    font-weight: bold;
+  }
+  .col .btn{
+    /* --bs-btn-bg: #ffffff; */
+    width: auto;
+  }
+  .sticky-alert {
+    position: fixed; /* Make the alert fixed on the screen */
+    top: 20px; /* Distance from the top */
+    right: 20px; /* Distance from the right */
+    z-index: 1000; /* Ensure the alert is above other elements */
+    max-width: 300px; /* Optional: Limit the width of the alert */
+    animation: slideIn 0.5s ease-out; /* Optional: Add a slide-in animation */
+}

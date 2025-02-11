@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <title>Scientific Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div id="danger-alert" class="alert alert-danger d-flex justify-content-between d-none sticky-alert" role="alert">
+        <p class="my-0 me-4">Enter valid Input!</p>
+        <button type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+
+    <div class="conatiner-fluid w-100 vh-100">
+        <button class="btn btn-secondary border-2 text-center d-md-none position-absolute top-0 end-0 m-2" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#historyOffcanvas" aria-controls="historyOffcanvas">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
+                <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
+                <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
+                <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
+              </svg>
+        </button>
+        <div class="row w-100 h-100">
+            <div class="col-12 col-md-8">
+                <div class="calculator p-3 d-flex flex-column h-100">
+
+                    <!-- Title -->
+                    <h4 class="mb-0">Calculator</h4>
+
+                    <!-- Input area -->
+                    <div class="mb-3 flex-grow-1 d-flex flex-column justify-content-end">
+                        <input readonly id="sub_input" class="form-control border-0 px-0 text-end fs-6 text-end w-100"
+                            value="">
+                        <input class="form-control border-0 px-0 text-end fs-1 text-end fw-bold" id="Input_area"
+                            placeholder="0" onfocus="keepFocus()"></input>
+                    </div>
+
+                    <!-- Degree and fahrenheit button -->
+                    <div class="scale">
+                        <ul class="nav nav-underline">
+                            <li class="nav-item">
+                                <button type="button" class=" btn btn-light border-0  text-dark"
+                                    onclick="toggleText(this)">DEG</button>
+
+                            </li>
+                            <li class="nav-item">
+                                <div class=" p-0 text-dark nav-link ">
+                                    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
+                                        onchange="toggleActiveClass(this)">
+                                    <label class="btn py-1 " for="btncheck1">F-E</label>
+                                </div>
+                                <!-- <input  class="  text-dark">F-E</input>   -->
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <!-- Memory buttons -->
+                    <div class="memory-btn mb-1" id="memory_btns">
+                        <button type="button" class=" btn btn-light border-0  text-dark" id="memory_mc">MC</button>
+                        <button type="button" class=" btn btn-light border-0  text-dark" id="memory_mr">MR</button>
+                        <button type="button" class=" btn btn-light border-0  text-dark" id="memory_ma">M+</button>
+                        <button type="button" class=" btn btn-light border-0  text-dark" id="memory_mre">M-</button>
+                        <button type="button" class=" btn btn-light border-0  text-dark" id="memory_ms">MS</button>
+                    </div>
+
+                    <!--border above -->
+                    <div class="keyboard border-top d-flex flex-column ">
+                        <!--Dropdowns-->
+                        <div class="drop-btn d-flex py-2 gap-2">
+                            <div class="dropdown h-auto">
+                                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" aria-expanded="false">
+                                    <!-- <button class="btn btn-light  border-0 dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false"> -->
+                                    Trigonometry
+                                </button>
+                                <div class="dropdown-menu bg-body-tertiary px-2" style="width: 300px;" id="trigo_drop">
+                                    <div class="row row-cols-4 pb-2">
+                                        <div class="col col-3 ">
+                                            <button class="btn btn-light px-0 w-100 "
+                                                id="trig2nd">2<sup>nd</sup></button>
+                                        </div>
+                                        <div class="col col-3  ">
+                                            <button class="btn btn-light  t-func px-0 w-100" id="sin">sin</button>
+                                        </div>
+                                        <div class="col col-3  ">
+                                            <button class="btn btn-light  t-func px-0 w-100" id="cos">cos</button>
+
+                                        </div>
+                                        <div class="col col-3  ">
+                                            <button class="btn btn-light  t-func px-0 w-100" id="tan">tan</button>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="row row-cols-4">
+                                        <div class="col col-3 p">
+                                            <button class="btn btn-light px-0 w-100" id="hyp">hyp</button>
+                                        </div>
+                                        <div class="col col-3  ">
+                                            <button class="btn btn-light  t-func px-0 w-100" id="sec">sec</button>
+                                        </div>
+                                        <div class="col col-3  ">
+                                            <button class="btn btn-light t-func  px-0 w-100" id="csc">csc</button>
+
+                                        </div>
+                                        <div class="col col-3  ">
+                                            <button class="btn btn-light  t-func px-0 w-100" id="cot">cot</button>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dropdown h-auto ">
+                                <button class="btn btn-light  border-0 dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Function
+                                </button>
+                                <div class="dropdown-menu bg-body-tertiary px-2" style="width: 250px;" id="func_drop">
+                                    <div class="row row-cols-3 pb-2">
+                                        <div class="col col-4 ">
+                                            <button class="btn btn-light px-0 w-100 " id="modulo">
+                                                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                                                    <mrow>
+                                                        <mi>|</mi>
+                                                        <mo>x</mo>
+                                                        <mi>|</mi>
+                                                    </mrow>
+                                                </math></button>
+                                        </div>
+                                        <div class="col col-4  ">
+                                            <button class="btn btn-light  px-0 w-100" id="floor">
+                                                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                                                    <mrow>
+                                                        <mo>&#x230A;</mo>
+                                                        <mi>x</mi>
+                                                        <mo>&#x230B;</mo>
+                                                    </mrow>
+                                                </math></button>
+                                        </div>
+                                        <div class="col col-4  ">
+                                            <button class="btn btn-light  px-0 w-100" id="ceil">
+                                                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                                                    <mrow>
+                                                        <mo>&#x2308;</mo> <!-- Left ceiling bracket -->
+                                                        <mi>x</mi>
+                                                        <mo>&#x2309;</mo> <!-- Right ceiling bracket -->
+                                                    </mrow>
+                                                </math></button>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="row row-cols-3 ">
+                                        <div class="col col-4 ">
+                                            <button class="btn btn-light px-0 w-100 " id="rand">rand</button>
+                                        </div>
+                                        <div class="col col-4  ">
+                                            <button class="btn btn-light  px-0 w-100"
+                                                id="dms"><span>&rarr;</span>dms</button>
+                                        </div>
+                                        <div class="col col-4  ">
+                                            <button class="btn btn-light  px-0 w-100"
+                                                id="deg"><span>&rarr;</span>deg</button>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- keyboard -->
+                        <div class="row row-cols-5 text-center gy-1 flex-grow-1" id="keys">
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light px-0 w-100 shadow-sm h-100 rounded-2"
+                                    id="chan">2<sup>nd</sup></button>
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 "
+                                    id="pi">&pi;</button>
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 " id="e">e</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 "
+                                    id="clear">C</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100  "
+                                    id="b_space_cont"><img src="./images/icons8-backspace-100.png" id="b_space"
+                                        alt="backspace" height="24px"></button>
+                            </div>
+
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 initial_button" id="square">
+                                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                                        <mrow>
+                                            <mo>x</mo>
+                                            <sup>2</sup>
+                                        </mrow>
+                                    </math>
+                                </button>
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 toggle_button" id="square_inv">
+                                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                                        <mrow>
+                                            <mo>x</mo>
+                                            <sup>3</sup>
+                                        </mrow>
+                                    </math>
+                                </button>
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 "
+                                    id="inverse"><sup>1</sup>/<sub><math xmlns="http://www.w3.org/1998/Math/MathML">
+                                            <mrow>
+                                                <mo>x</mo>
+                                            </mrow>
+                                        </math>
+                                    </sub>
+                                </button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 " id="abs"><math
+                                        xmlns="http://www.w3.org/1998/Math/MathML">
+                                        <mrow id="abs_int">
+                                            <mi>|</mi>
+                                            <mo>x</mo>
+                                            <mi>|</mi>
+                                        </mrow>
+                                    </math>
+                                </button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 "
+                                    id="exp">exp</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 " id="%">mod</button>
+
+                            </div>
+
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light px-0 rounded-2 w-100 shadow-sm h-100 initial_button"
+                                    id="square_root" ><sup>2</sup><span>&#8730;x</span>
+                                </button>
+                                <button class="btn btn-light px-0 rounded-2 w-100 shadow-sm h-100 toggle_button"
+                                    id="square_root_inv"><sup>3</sup><span>&#8730;x</span>
+                                </button>
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 " id="start_p">(<sub
+                                        class="ms-1" id="count_badge"></sub></button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 "
+                                    id="end_p">)</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 "
+                                    id="fact">n!</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2  px-0 w-100 shadow-sm h-100 "
+                                    id="/">&#247;</button>
+                            </div>
+
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 initial_button" id="**">
+                                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                                        <mrow>
+                                            <mo>x</mo>
+                                            <sup>y</sup>
+                                        </mrow>
+                                    </math>
+                                </button>
+                                <button class="btn btn-light rounded-2 px-0 w-100 shadow-sm h-100 toggle_button" id="yrootx_inv">
+                                    <math xmlns="http://www.w3.org/1998/Math/MathML">
+                                        <mrow>
+                                            <sup>y</sup>
+                                            &#8730;
+                                            <sub>x</sub>
+                                        </mrow>
+                                    </math>
+                                </button>
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="7">7</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="8">8</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="9">9</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="*">&#215;</button>
+
+                            </div>
+
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light w-100 rounded-2 px-0 w-100 shadow-sm h-100 initial_button"
+                                    id="tenpow">10<sup>x</sup></button>
+                                <button class="btn btn-light w-100 rounded-2 px-0 w-100 shadow-sm h-100 toggle_button"
+                                    id="tenpow_inv">2<sup>x</sup></button>
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="4">4</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="5">5</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="6">6</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="-">&#8722;</button>
+                            </div>
+
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 initial_button"
+                                    id="log">log</button>
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 toggle_button"
+                                    id="log_inv">log<sub>x</sub>y</button>
+
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="1">1</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="2">2</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="3">3</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="+">&#43;</button>
+
+                            </div>
+
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 initial_button"
+                                    id="ln">ln</button>
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 toggle_button"
+                                    id="ln_inv">e<sup>x</sup></button>
+
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="change_sign"><sup>+</sup>/<sub>&#8722;</sub></button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="0">0</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-light rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id=".">.</button>
+
+                            </div>
+                            <div class="g-col-1 px-1 rounded-2 ">
+                                <button class="btn btn-primary rounded-2 w-100 px-0 w-100 shadow-sm h-100 "
+                                    id="=">=</button>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col col-md-4 d-md-flex d-none vh-100 flex-column px-0">
+                <div class="history">
+                    <ul class="nav nav-underline">
+                        <li class=" nav-item ">
+                            <button class=" nav-link active text-dark py-1 hist" onclick="setActive(this,'history')"
+                                aria-current="page" href="#">History</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link text-dark py-1 memo" onclick="setActive(this,'memory')"
+                                href="#">Memory</button>
+                        </li>
+                    </ul>
+                </div>
+                <div id="history_div" class="overflow-auto flex-grow-1">
+
+                </div>
+                <div id="memory_div" class="overflow-auto flex-grow-1" style="display: none;">
+
+                </div>
+                <div class="delete d-flex justify-content-end">
+                    <button class="btn btn-light" onclick="deleteSession()"><img src="images/bin-svgrepo-com.svg"
+                            alt="Delete" height="20rem"></button>
+                </div>
+            </div>
+
+
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="historyOffcanvas"
+                aria-labelledby="historyOffcanvasLabel">
+                
+                <div class="offcanvas-body d-flex flex-column">
+                    <div class="history">
+                        <ul class="nav nav-underline">
+                            <li class=" nav-item ">
+                                <button class=" nav-link active text-dark py-1 hist" onclick="setActive(this,'history_offcanvas')"
+                                    aria-current="page" href="#">History</button>
+                            </li>
+                            <li class="nav-item">
+                                <button class="nav-link text-dark py-1 memo" onclick="setActive(this,'memory_offcanvas')"
+                                    href="#">Memory</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="history_offcanvas" class="overflow-auto flex-grow-1">
+
+                    </div>
+                    <div id="memory_offcanvas" class="overflow-auto flex-grow-1" style="display: none;">
+
+                    </div>
+                    <div class="delete d-flex justify-content-end">
+                        <button class="btn btn-light" onclick="deleteSession()"><img src="images/bin-svgrepo-com.svg"
+                                alt="Delete" height="20rem"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/Tsscript.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
